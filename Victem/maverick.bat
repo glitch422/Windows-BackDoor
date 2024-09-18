@@ -5,12 +5,6 @@ echo   | |\  /| |     / ___ \ \ \ / /     |  _| _   |  __ /     | | | |         
 echo  _| |_\/_| |_  _/ /   \ \_\ ' /     _| |__/ | _| |  \ \_  _| |_\ `.___.'\ _| |  \ \_  _  _| |__) |_/ /   \ \_  _| |_    
 echo |_____||_____||____| |____|\_/     |________||____| |___||_____|`.____ .'|____||____|(_)|_______/|____| |____||_____|   
                                                                                                                         
-
-
-
-@echo off
-setlocal
-
 :: Define paths
 set "startupDir=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 set "batPath=%~f0"
@@ -34,21 +28,129 @@ if not exist "%startupDir%\%~nx0" (
     exit /b
 )
 
-:: 2. Check if Python3 is installed
+:: 2. Check if python.bat exists in the Startup folder
+if not exist "%pythonBatchPath%" (
+    echo Creating python.bat in Startup folder...
+    (
+        echo MMMMMMMMMMMMWNKkxolccc:::::::clodx0XWWMMMMMMMMMMMM
+        echo MMMMMMMMMMWWXdccoddl:::::::::::::::lkNMMMMMMMMMMMM
+        echo MMMMMMMMMMMWk::xNWNkc::::::::::::::;cOWMMMMMMMMMMM
+        echo MMMMMMMMMMMWk::oO00dc::::::;:::::::::kWWMMMMMMMMMM
+        echo WMMMMMMMMMMWkc:::c:::::::::::::::;;::kWMMMMMMMMMMM
+        echo WMMMMWWWWWWWK0OOOOOOOOOOdc:;:;:::::;:kWWWWWWWWMMMM
+        echo WWNKOxdddddddddddddddddol:::::::;;:;:kWNXXXXXXNWMM
+        echo WKdc::::::::::::::::::::::::::;;;::;;kWXKKKKKKKXNW
+        echo Ko::::::::::::::::::::::::::::;;:;;;:kWXKKKKKKKKXN
+        echo d::::::::::::::::::::::::::;;;;;;:;;c0WXKKKKKKKKKX
+        echo c::::::::::::::::::::::::;;;;;;;;;:cONXKKKKKKKKKKK
+        echo c:::::::::::::cloooooooooooooooodxOXNXKKKKKKKKKK0K
+        echo ::::::::::::lkKXNNNNNNNXXXXXXXXNNNXXKKKKKKKKKKKK00
+        echo c::::::::::dXWNXXXKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK0K
+        echo l::::::::;lKWXKKKKKKKKKKKKKKKKKKKKKKKKKKKKK000000K
+        echo k::::::::;oNNXKKKKKKKKKKKKKKKKKKKKKKKKK000000000KN
+        echo Xx:::::::;dNNKXKKKKKKKKKKKKKKKKKKKKKKKKK00KK000KNW
+        echo WNOoc:::;;dXNKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKXNWM
+        echo WWWNK0OOOOKNNKKKKKKKKKKKXXNNNNNNNNNNXNNNNWNNWWMMMM
+        echo MMMMMMWWMMMWNKKKKKKKKKKKKKKXKKKKKKKKKNWMMMMMMMMMMM
+        echo MMMMMMMMMMMWNKKKKKKKKKKKKKKKKKKXXKK0KXWMMMMMMMMMMM
+        echo MMMMMMMMMMMWNKKKKKKKKKKKKKKKKKNWWNX0KXWMMMMMMMMMMM
+        echo MMMMMMMMMMMMWXKKKKKKKKKKKKKK0KXXNXK0KNMMMMMMMMMMMM
+        echo MMMMMMMMMMMMMWNXXKKKKKKK0KKK000KKKKXNWMMMMMMMMMMMM
+        echo MMMMMMMMMMMMMMMWWNXXKKKKKKKKKKKKXNWWMMMMMMMMMMMMMM
+        echo
+        echo @echo off
+        echo setlocal
+        echo set PYTHON_INSTALLER_URL=https://www.python.org/ftp/python/3.12.0/python-3.12.0-amd64.exe
+        echo set PYTHON_INSTALLER=python_installer.exe
+        echo set INSTALL_OPTIONS=/quiet InstallAllUsers=0 PrependPath=1
+        echo python --version >nul 2>&1
+        echo if %%ERRORLEVEL%% EQU 0 (
+        echo     echo Python is already installed.
+        echo     exit /b 0
+        echo )
+        echo echo Downloading Python installer...
+        echo powershell -Command "Invoke-WebRequest -Uri %%PYTHON_INSTALLER_URL%% -OutFile %%PYTHON_INSTALLER%%"
+        echo if not exist "%%PYTHON_INSTALLER%%" (
+        echo     echo Failed to download Python installer.
+        echo     exit /b 1
+        echo )
+        echo echo Installing Python...
+        echo start /wait %%PYTHON_INSTALLER%% %%INSTALL_OPTIONS%%
+        echo python --version >nul 2>&1
+        echo if %%ERRORLEVEL%% EQU 0 (
+        echo     echo Python installation successful.
+        echo ) else (
+        echo     echo Python installation failed.
+        echo )
+        echo echo Removing installer file...
+        echo del "%%PYTHON_INSTALLER%%"
+        echo endlocal
+        echo pause
+        echo exit
+    ) > "%pythonBatchPath%"
+)
+
+:: 3. Check if Python3 is installed
 where python >nul 2>nul
 if errorlevel 1 (
     echo Python3 is not installed. Running %pythonBatch%...
-    call "%pythonBatch%"
+    call "%pythonBatchPath%"
 )
 
-:: 3. Check if FFmpeg is installed
+:: 4. Check if FFmpeg is installed
 where ffmpeg >nul 2>nul
 if errorlevel 1 (
-    echo FFmpeg is not installed. Running %ffmpegBatch%...
-    call "%ffmpegBatch%"
+    echo FFmpeg is not installed. Checking for %ffmpegBatch%...
+    if not exist "%startupDir%\%ffmpegBatch%" (
+        echo Creating %ffmpegBatch% in Startup folder...
+        (
+            echo .------..------..------..------..------..------..------..------..------..------.
+            echo |F.--. ||F.--. ||M.--. ||P.--. ||E.--. ||G.--. ||..--. ||B.--. ||A.--. ||T.--. |
+            echo | :(): || :(): || (\/) || :/\: || (\/) || :/\: || :(): || :(): || (\/) || :/\: |
+            echo | ()() || ()() || :\/: || (__) || :\/: || :\/: || ()() || ()() || :\/: || (__) |
+            echo | '--'F|| '--'F|| '--'M|| '--'P|| '--'E|| '--'G|| '--'.|| '--'B|| '--'A|| '--'T|
+            echo `------'`------'`------'`------'`------'`------'`------'`------'`------'`------'
+            echo
+            echo @echo off
+            echo :: Check if running as administrator
+            echo openfiles >nul 2>&1
+            echo if %errorlevel% neq 0 (
+            echo     echo Requesting administrator privileges...
+            echo     powershell -Command "Start-Process '%~f0' -Verb RunAs"
+            echo     exit /b
+            echo )
+            echo.
+            echo :: Check for Chocolatey installation
+            echo choco -v >nul 2>&1
+            echo if %errorlevel% neq 0 (
+            echo     echo Installing Chocolatey...
+            echo     @powershell -NoProfile -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy Bypass -Scope Process; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+            echo     if %errorlevel% neq 0 (
+            echo         echo Failed to install Chocolatey. Exiting...
+            echo         exit /b %errorlevel%
+            echo     )
+            echo )
+            echo.
+            echo :: Install ffmpeg using Chocolatey
+            echo echo Installing ffmpeg...
+            echo choco install ffmpeg -y
+            echo if %errorlevel% neq 0 (
+            echo     echo Failed to install ffmpeg. Exiting...
+            echo     exit /b %errorlevel%
+            echo )
+            echo.
+            echo echo ffmpeg has been installed successfully.
+            echo pause
+            echo.
+            echo :: Exit the batch script and close the Command Prompt window
+            echo exit
+        ) > "%startupDir%\%ffmpegBatch%"
+    )
+    echo Running %ffmpegBatch%...
+    call "%startupDir%\%ffmpegBatch%"
 )
 
-:: 4. Check if smile.ps1 is in the Startup folder
+:: 5. Check if smile.ps1 is in the Startup folder
 if not exist "%ps1Path%" (
     echo Creating smile.ps1 in Startup folder...
     (
@@ -65,7 +167,7 @@ if not exist "%ps1Path%" (
         echo L    ,M9 M   `'   MM  MM  MM    /  MM      / 68b  MM        L    ,M9 MM 
         echo MYMMMM9 _M_      _MM__MM__MMMMMMM _MMMMMMMMM Y89 _MM_       MYMMMM9 _MM_
         echo "@
-        echo 
+
         echo # Print ASCII art
         echo Write-Host $asciiART
         echo
@@ -81,8 +183,7 @@ if not exist "%ps1Path%" (
         echo     $currentProcess = Get-Process -Id $currentProcessId -ErrorAction SilentlyContinue
         echo     if ($null -eq $currentProcess) {
         echo         return $false
-        echo     }
-        echo     
+        echo     }    
         echo     # Filter by the process name and ensure it's the same executable
         echo     $processes = Get-Process | Where-Object { 
         echo         $_.Id -ne $currentProcessId -and $_.MainModule.FileName -eq $currentProcess.MainModule.FileName
